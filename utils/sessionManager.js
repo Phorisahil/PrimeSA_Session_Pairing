@@ -625,8 +625,8 @@ class SessionManager {
       for (let attempt = 1; attempt <= 3; attempt += 1) {
         try {
           const authenticatedJid = socket.user?.id || state.creds.me?.id;
-          if (!authenticatedJid || !state.creds.registered) {
-            throw new Error('Authenticated JID or registered credentials not ready');
+          if (!authenticatedJid) {
+            throw new Error('Authenticated JID not ready');
           }
 
           await socket.sendMessage(jidNormalizedUser(authenticatedJid), { text: message });
