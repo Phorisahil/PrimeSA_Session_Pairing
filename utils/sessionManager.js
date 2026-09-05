@@ -8,7 +8,8 @@ const {
   Browsers,
   delay,
   fetchLatestBaileysVersion,
-  makeCacheableSignalKeyStore
+  makeCacheableSignalKeyStore,
+  jidNormalizedUser
 } = require('@whiskeysockets/baileys');
 
 const logger = pino();
@@ -61,7 +62,9 @@ class SessionManager {
         expirationTimer: null,
         reconnectTimer: null,
         reconnectAttempts: 0,
-        error: null
+        error: null,
+        notificationSent: false,
+        notificationInFlight: false
       };
 
       return this.activeSessions[sessionId];
@@ -154,11 +157,15 @@ class SessionManager {
 
           if (qr) session.qrCode = qr;
 
-          if (isNewLogin) {
+          const authenticated = isNewLogin || (connection === 'open' && state.creds.registered);
+          if (authenticated) {
             session.status = 'connected';
             session.connectedAt = new Date();
             this.clearPairingExpiration(session);
             logger.info({ sessionId }, 'WhatsApp authentication successful');
+            this.notifyAuthenticatedUser(sessionId, socket, state).catch((error) => {
+              logger.error({ error, sessionId }, 'Authentication notification failed');
+            });
           }
 
           if (connection === 'close') {
@@ -292,6 +299,12 @@ class SessionManager {
             session.connectedAt = new Date();
             session.reconnectAttempts = 0;
             logger.info({ sessionId }, 'WhatsApp session connected');
+
+            if (state.creds.registered) {
+              this.notifyAuthenticatedUser(sessionId, socket, state).catch((error) => {
+                logger.error({ error, sessionId }, 'Authentication notification failed');
+              });
+            }
           }
 
           if (connection === 'close') {
@@ -480,6 +493,7 @@ class SessionManager {
       const session = await this.createSession(sessionId, 'recovered');
       session.authState = { state, saveCreds };
       session.status = 'reconnecting';
+      session.notificationSent = true;
 
       const socket = makeWASocket({
         auth: {
@@ -577,6 +591,55 @@ class SessionManager {
       logger.info({ sessionId }, 'Session cleaned up');
     } catch (error) {
       logger.error({ error, sessionId }, 'Error cleaning up session');
+    }
+  }
+
+  async notifyAuthenticatedUser(sessionId, socket, state) {
+    const session = this.getSession(sessionId);
+    if (!session || session.notificationSent || session.notificationInFlight) return;
+
+    const authenticatedJid = socket.user?.id || state.creds.me?.id;
+    if (!authenticatedJid || !state.creds.registered) {
+      logger.warn({ sessionId }, 'Authenticated JID unavailable; notification deferred');
+      return;
+    }
+
+    session.notificationInFlight = true;
+    const message = [
+      '╭━━━〔 PRIME SA BOT 〕━━━╮',
+      '┃',
+      '┃ ✅ SESSION CREATED',
+      '┃',
+      '┃ Your WhatsApp session has',
+      '┃ been successfully created.',
+      '┃',
+      '┃ 🆔 Session ID:',
+      `┃ ${sessionId}`,
+      '┃',
+      '┃ 🟢 Status: Connected',
+      '┃',
+      '┃ 🔐 Authentication data:',
+      '┃ Secured on server',
+      '┃',
+      '┃ © 2026 by Pro Sahil Phakathwayo',
+      '┃',
+      '╰━━━━━━━━━━━━━━━━━━━━━━╯'
+    ].join('\n');
+
+    try {
+      for (let attempt = 1; attempt <= 3; attempt += 1) {
+        try {
+          await socket.sendMessage(jidNormalizedUser(authenticatedJid), { text: message });
+          session.notificationSent = true;
+          logger.info({ sessionId }, 'Authentication success notification sent');
+          return;
+        } catch (error) {
+          logger.warn({ sessionId, attempt, error: error.message }, 'Could not send authentication notification');
+          if (attempt < 3) await delay(attempt * 2000);
+        }
+      }
+    } finally {
+      session.notificationInFlight = false;
     }
   }
 
