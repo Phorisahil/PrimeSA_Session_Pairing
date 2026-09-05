@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080b12" />
+    <title>PRIME SA BOT | WhatsApp Session Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand-lockup" href="#top" aria-label="Prime SA Bot home">
+        <span class="brand-symbol" aria-hidden="true"><span></span><i class="fa-solid fa-bolt"></i></span>
+        <span><strong>PRIME SA BOT</strong><small>WhatsApp Session Generator</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="active" href="#top">Home</a>
+        <a href="#generator">Session Generator</a>
+        <a href="https://whatsapp.com/channel/0029VbCIUrC4tRrmjdI9QM1x" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a>
+        <a href="https://youtube.com/@professorsahil-m7q" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </nav>
+      <a class="header-cta" href="#generator"><i class="fa-solid fa-link"></i><span>Connect device</span></a>
+    </header>
+
+    <main id="top">
+      <section class="hero-section content-width" aria-labelledby="heroTitle">
+        <div class="hero-copy">
+          <p class="section-kicker"><span class="kicker-line"></span> POWERED BY SAHIL PHAKATHWAYO</p>
+          <h1 id="heroTitle">Connect your <em>WhatsApp</em><br />to PrimeSA Bot.</h1>
+          <p class="hero-description">Connect your WhatsApp account to PrimeSA Bot using a secure pairing process built for a smooth, reliable start. PrimeSA Bot is an independent third-party tool and is not affiliated with WhatsApp.</p>
+          <div class="hero-points" aria-label="Connection features">
+            <span><i class="fa-solid fa-shield-halved"></i> Server-secured sessions</span>
+            <span><i class="fa-solid fa-bolt"></i> Fast device linking</span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+          <div class="signal-card"><span class="signal-icon"><i class="fa-solid fa-mobile-screen-button"></i></span><span><b>Ready to connect</b><small>Choose your preferred method below</small></span><i class="fa-solid fa-arrow-down"></i></div>
+          <div class="hero-badge"><i class="fa-solid fa-check"></i> Secure session flow</div>
+        </div>
+      </section>
+
+      <section id="generator" class="generator-section content-width" aria-labelledby="generatorTitle">
+        <div class="section-heading">
+          <div><p class="section-kicker"><span class="kicker-line"></span> AUTHENTICATION</p><h2 id="generatorTitle">Session generator</h2></div>
+          <p>Link one device at a time.<br /><span>Your authentication data stays on the server.</span></p>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-card-top">
+            <div><span class="step-label">01 / METHOD</span><h3>Choose how to connect</h3></div>
+            <span class="live-pill"><i></i> READY</span>
+          </div>
+          <div class="mode-switch" role="tablist" aria-label="Connection method">
+            <button class="mode-button active" type="button" role="tab" aria-selected="true" data-tab="pairing"><span class="tab-icon"><i class="fa-solid fa-key"></i></span><span><b>Pairing Code</b><small>Use your phone number</small></span><i class="fa-solid fa-arrow-right tab-arrow"></i></button>
+            <button class="mode-button" type="button" role="tab" aria-selected="false" data-tab="qr"><span class="tab-icon"><i class="fa-solid fa-qrcode"></i></span><span><b>QR Code</b><small>Scan with WhatsApp</small></span><i class="fa-solid fa-arrow-right tab-arrow"></i></button>
+          </div>
+
+          <section id="pairing" class="mode-panel active" role="tabpanel">
+            <div class="panel-intro"><span class="panel-number">A</span><div><h3>Pair with phone number</h3><p>Enter your full number with country code to receive a one-time pairing code.</p></div></div>
+            <div class="input-group"><label for="phone">WhatsApp number</label><div class="input-wrap"><i class="fa-solid fa-phone"></i><input type="tel" id="phone" class="input-field" placeholder="+27 82 123 4567" autocomplete="tel" /></div><p class="field-note">South African numbers starting with 0 are also accepted.</p></div>
+            <button id="generatePairingBtn" class="primary-button" type="button"><i class="fa-solid fa-bolt"></i><span>Generate Pairing Code</span></button>
+            <div id="pairingResult" class="result-area hidden" aria-live="polite">
+              <div class="status-line waiting"><span class="status-dot"></span><span id="pairingStatus">Waiting for WhatsApp...</span></div>
+              <div id="pairingCodeDisplay" class="code-panel hidden"><div class="code-heading"><span class="code-label">PAIRING CODE</span><span class="code-live"><i></i> ONE-TIME</span></div><strong class="code-value" id="pairingCodeValue">----</strong><span class="expiry-label" id="pairingExpiry">Expires in 01:30</span><div class="expiry-track"><span id="pairingExpiryProgress"></span></div><button id="copyPairingBtn" class="copy-button" type="button"><i class="fa-regular fa-copy"></i> Copy code</button></div>
+              <div id="pairingInstructions" class="instructions hidden"><i class="fa-solid fa-circle-info"></i><span>Open WhatsApp <b>Settings</b> &rarr; <b>Linked devices</b> &rarr; <b>Link with phone number instead</b>.</span></div>
+              <div id="pairingError" class="error-message hidden"></div><button id="cancelPairingBtn" class="text-button" type="button">Cancel session</button><button id="newPairingBtn" class="secondary-button hidden" type="button"><i class="fa-solid fa-rotate-right"></i> Generate new pairing code</button>
+            </div>
+          </section>
+
+          <section id="qr" class="mode-panel hidden" role="tabpanel">
+            <div class="panel-intro"><span class="panel-number">B</span><div><h3>Scan a QR code</h3><p>Open WhatsApp on your phone and scan the code shown below.</p></div></div>
+            <button id="generateQRBtn" class="primary-button" type="button"><i class="fa-solid fa-qrcode"></i><span>Generate QR Code</span></button>
+            <div id="qrResult" class="result-area hidden" aria-live="polite"><div class="status-line waiting"><span class="status-dot" id="qrStatusDot"></span><span id="qrStatus">Generating QR code...</span></div><div id="qrCodeDisplay" class="qr-panel hidden"><p class="qr-instruction">Scan this code with WhatsApp</p><div class="qr-frame"><div id="qrCanvas" class="qr-code" aria-label="WhatsApp QR code"></div></div></div><div id="qrInstructions" class="instructions hidden"><i class="fa-solid fa-circle-info"></i><span>WhatsApp <b>Settings</b> &rarr; <b>Linked devices</b> &rarr; <b>Link a device</b>.</span></div><div id="qrError" class="error-message hidden"></div><div class="action-row"><button id="refreshQRBtn" class="secondary-button hidden" type="button"><i class="fa-solid fa-rotate"></i> Refresh QR</button><button id="cancelQRBtn" class="text-button" type="button">Cancel session</button></div></div>
+          </section>
+          <p class="security-note"><i class="fa-solid fa-lock"></i> Your authentication data is stored securely on the server. Never share your pairing code.</p>
+        </div>
+      </section>
+
+      <section id="community" class="community-section content-width" aria-labelledby="communityTitle">
+        <div class="section-heading"><div><p class="section-kicker"><span class="kicker-line"></span> STAY IN THE LOOP</p><h2 id="communityTitle">Follow PrimeSA</h2></div><p>Updates, releases and practical tutorials<br /><span>from Sahil Phakathwayo.</span></p></div>
+        <div class="community-grid">
+          <article class="community-card whatsapp-card"><div class="card-icon"><i class="fa-brands fa-whatsapp"></i></div><div><h3>WhatsApp Channel</h3><p>Join the official PrimeSA WhatsApp Channel for updates, releases and announcements.</p><a href="https://whatsapp.com/channel/0029VbCIUrC4tRrmjdI9QM1x" target="_blank" rel="noopener noreferrer">JOIN WHATSAPP CHANNEL <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div></article>
+          <article class="community-card youtube-card"><div class="card-icon"><i class="fa-brands fa-youtube"></i></div><div><h3>YouTube</h3><p>Subscribe to Professor Sahil for PrimeSA Bot updates, tutorials and projects.</p><a href="https://youtube.com/@professorsahil-m7q" target="_blank" rel="noopener noreferrer">VISIT YOUTUBE <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div></article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="content-width footer-inner"><div class="footer-brand"><strong>PRIME SA BOT</strong><span>Sahil Phakathwayo</span><small>WhatsApp Session Generator</small></div><div class="footer-links"><a href="https://whatsapp.com/channel/0029VbCIUrC4tRrmjdI9QM1x" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</a><a href="https://youtube.com/@professorsahil-m7q" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i> YouTube</a></div><p class="copyright">© 2026 by Pro Sahil Phakathwayo</p></div></footer>
+
+    <div id="successScreen" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="successTitle"><div class="modal-content"><div class="success-icon"><i class="fa-solid fa-circle-check"></i></div><p class="modal-kicker">AUTHENTICATION COMPLETE</p><h2 id="successTitle">WhatsApp Connected Successfully!</h2><p>Your PrimeSA session has been created successfully.</p><div class="session-info"><span>Session ID</span><strong id="successSessionId">session_xxxxx</strong><span class="connected-status"><i></i> CONNECTED</span></div><p class="modal-security"><i class="fa-solid fa-shield-halved"></i> Your authentication data is securely stored on the server.</p><button id="createAnotherBtn" class="primary-button" type="button">Create another session</button></div></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="app.js"></script>
+  </body>
+</html>
