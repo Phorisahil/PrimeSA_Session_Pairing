@@ -407,7 +407,7 @@ class SessionApp {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        this.showCopyNotification('Pairing code copied to clipboard!');
+        this.showCopyNotification('Pairing code for PrimeSA_Bot copied to clipboard!');
       })
       .catch((err) => {
         console.error('Failed to copy:', err);
